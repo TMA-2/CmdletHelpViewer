@@ -1,0 +1,88 @@
+﻿<Window x:Class="CmdletHelpViewer.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Views="clr-namespace:CmdletHelpViewer.Views"
+          xmlns:ViewModels="clr-namespace:CmdletHelpViewer.ViewModels"
+    xmlns:behaviour="clr-namespace:CmdletHelpViewer.AttachedCommandBehavior"
+    xmlns:services="clr-namespace:CmdletHelpViewer.Service"
+         xmlns:ad="clr-namespace:AvalonDock;assembly=AvalonDock"
+         services:DialogService.IsRegisteredView="True"
+        Title="Cmdlet Help Viewer" Height="600" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type ViewModels:CmdletCommandViewModel}">
+            <Views:CmdletCommandView  />
+        </DataTemplate>
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Control" Key="O" Command="{Binding BrowseFileCommand}"></KeyBinding>
+        <KeyBinding Modifiers="Control" Key="X" Command="{Binding ExitCommand}"></KeyBinding>
+    </Window.InputBindings>
+    <Grid Background="#FF4D5B6C">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="36*" />
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Menu>
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open (Ctrl+O)" Command="{Binding BrowseFileCommand}"/>
+                <MenuItem Header="_Close (Ctrl+X)" Command="{Binding ExitCommand}"/>
+            </MenuItem>
+        </Menu>
+        <!--<GridSplitter Grid.Row="0" Grid.Column="1" Background="#FF4D5B6C" Width="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>-->
+        <ad:DockingManager x:Name="DockManager" Grid.Row="1" IsAnimationEnabled="True" DocumentsSource="{Binding DocumentContents}" >
+            <ad:ResizingPanel Orientation="Horizontal">
+                <ad:DockablePane ad:ResizingPanel.ResizeWidth="225">
+                    <ad:DockableContent Title="Commands" IsCloseable="False" >
+                        <TreeView Name="MainTreeView" Background="#FFE3E9F2" BorderBrush="Black">
+                            <TreeViewItem Header="{Binding FileName}" ItemsSource="{Binding CmdletNamesAndXml}" IsExpanded="True" 
+                                              behaviour:CommandBehavior.Event="MouseDoubleClick"
+                                              behaviour:CommandBehavior.Command="{Binding TreeViewItemMouseDoubleClickCommand}"
+                                              behaviour:CommandBehavior.CommandParameter="{Binding Path=SelectedItem, ElementName=MainTreeView}">
+                                <TreeViewItem.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontSize="12" Text="{Binding Path=Key}" />
+                                    </DataTemplate>
+                                </TreeViewItem.ItemTemplate>
+                            </TreeViewItem>
+                        </TreeView>
+                    </ad:DockableContent>
+                </ad:DockablePane>
+                <ad:DocumentPane x:Name="DocumentHost"/>
+            </ad:ResizingPanel>
+        </ad:DockingManager>
+
+        <Border Grid.Row="2"  BorderThickness="0,0,0,0" BorderBrush="Black" VerticalAlignment="Bottom" Height="29">
+            <Border BorderThickness="0,0,0,0" BorderBrush="#FFB3B3B3" Height="29">
+                <Grid x:Name="gridButton">
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0.3906,0.000751071" EndPoint="0.3906,1.00075">
+                            <GradientStop Color="#FF717171" Offset="0.056"/>
+                            <GradientStop Color="#FF323232" Offset="0.522"/>
+                            <GradientStop Color="#FF000000" Offset="1"/>
+                            <GradientStop Color="#FF000000" Offset="0.527"/>
+                            <GradientStop Color="#FF444343" Offset="0.292"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="20"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="3" Grid.Row="0" x:Name="StackPanelForButton" HorizontalAlignment="Right" Background="Transparent" Orientation="Horizontal"/>
+                    <Grid Grid.Column="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Image Cursor="Hand" ToolTip="www.cerebrata.com" Grid.Column="1"  Source="/Images/logo.png" Margin="5" Opacity="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" 
+                               behaviour:CommandBehavior.Event="MouseDown" 
+                               behaviour:CommandBehavior.Command="{Binding LauncWebSiteCommand}"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Border>
+    </Grid>
+</Window>

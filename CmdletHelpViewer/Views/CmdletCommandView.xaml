@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="CmdletHelpViewer.Views.CmdletCommandView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:behaviour="clr-namespace:CmdletHelpViewer.AttachedCommandBehavior"
+             xmlns:viewes="clr-namespace:CmdletHelpViewer.Views"
+             xmlns:Service="clr-namespace:CmdletHelpViewer.Service"
+             mc:Ignorable="d" 
+             d:DesignHeight="338" d:DesignWidth="298">
+    <ScrollViewer VirtualizingStackPanel.VirtualizationMode="Standard">
+        <Grid Background="#FFE3E9F2">
+            <Grid DataContext="{Binding Mode=OneTime}" x:Name="grid1" Background="#FFE3E9F2" Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Border BorderThickness="0,0,0,2" BorderBrush="Black" Grid.Row="0" >
+                    <TextBlock Text="{Binding Path= CmdletCommand.Name}" FontSize="30" Height="Auto" Width="Auto"/>
+                </Border>
+                <TextBlock Width="Auto" Height="30" FontSize="12" Text="{Binding CmdletCommand.ShortDescription}" Grid.Row="1" Margin="5"/>
+                <TextBlock Grid.Row="2" Text="Detailed description:"  FontSize="15" FontStyle="Normal" HorizontalAlignment="Left" VerticalAlignment="Bottom"  Width="Auto" Height="Auto" />
+                <TextBox Grid.Row="3" Width="Auto" FontSize="12" Text="{Binding CmdletCommand.DetailDescription, Mode=OneWay}" TextWrapping="Wrap" IsReadOnly="True" />
+                <TextBlock Grid.Row="4" Text="Syntax:" FontSize="15" FontStyle="Normal" HorizontalAlignment="Left" Width="Auto" Height="Auto" Padding="1" VerticalAlignment="Bottom" />
+                <TextBox Grid.Row="5" Width="Auto" FontSize="12" Text="{Binding CmdletCommand.Syntax, Mode=OneWay}" TextWrapping="Wrap" IsReadOnly="True"/>
+                <Expander Grid.Row="6" Header="Parameters" ExpandDirection="Down" IsExpanded="True"  Margin="1,0,-1,0" HorizontalAlignment="Stretch" Width="Auto" FontSize="15" FontStyle="Normal">
+                    <DataGrid ItemsSource="{Binding Path=CmdletCommand.Parameters}" DataContext="{Binding}"
+                               AutoGenerateColumns="False"  Width="Auto" IsReadOnly="True" BorderThickness="0" Grid.Row="0" Grid.Column="0"
+                               CanUserReorderColumns="False" CanUserSortColumns="False" CanUserResizeRows="False" 
+                               HeadersVisibility="Column" GridLinesVisibility="None" HorizontalAlignment="Stretch" 
+                               VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"
+                               RowDetailsVisibilityMode="Collapsed" x:Name="DataGridParameters" FontSize="12" FontStyle="Normal" SelectedIndex="{Binding ParameterIndex, Mode=OneWay}">
+                        <DataGrid.Columns >
+                            <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Path=Name}"/>
+                            <DataGridCheckBoxColumn  Header="Required" Width="Auto" Binding="{Binding Path=Required}" />
+                            <DataGridTextColumn Header="Input Pipeline" Width="*" Binding="{Binding Path=PipeLineInput}"/>
+                            <DataGridTextColumn Header="Position" Width="*" Binding="{Binding Path=Position}"/>
+                            <DataGridTemplateColumn Width="Auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="View Detail" DataContext="{Binding Parameter}" x:Name="btn1" Width="Auto" Height="Auto" ToolTip="Click Button to view detail"
+                                        Command="{Binding Path=DataContext.ViewParameterCommand, RelativeSource={RelativeSource  FindAncestor,    AncestorType={x:Type DataGrid}}}"
+                                        CommandParameter="{Binding DataContext,  RelativeSource={RelativeSource AncestorType={x:Type DataGridCell}}}"
+                                            />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                
+                </Expander>
+                <Expander Grid.Row="7" Header="Examples" ExpandDirection="Down"  HorizontalAlignment="Stretch" Width="Auto" Background="#FFE3E9F2" FontSize="15" FontStyle="Normal">
+                        <viewes:CmdletCommandExamplesView FontSize="12" FontStyle="Normal"/>
+                </Expander>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

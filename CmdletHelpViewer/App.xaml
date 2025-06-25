@@ -1,0 +1,36 @@
+﻿<Application x:Class="CmdletHelpViewer.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            Startup="OnStartup" >
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!--<ResourceDictionary Source="Styles\ApplicationStyles.xaml"/>-->
+                <ResourceDictionary Source="Themes/dev2010.xaml"/>
+                <ResourceDictionary Source="Themes/WhistlerBlue.xaml"/>
+                <ResourceDictionary Source="Themes/DataGridCustomStyle.xaml"/>
+                <!--<ResourceDictionary Source="/AvalonDock.Themes;component/themes/ExpressionDark.xaml"/>-->
+
+                <!--<ResourceDictionary Source="/AvalonDock;component/themes/aero.normalcolor.xaml"/>-->
+                <!--<ResourceDictionary Source="/AvalonDock;component/themes/classic.xaml"/>-->
+                <!--<ResourceDictionary Source="/AvalonDock;component/themes/luna.normalcolor.xaml"/>-->
+            </ResourceDictionary.MergedDictionaries>
+            <LinearGradientBrush x:Key="ThickBottomBar1" StartPoint="0.00121408,0.749408" EndPoint="1.11655,0.749408">
+                <LinearGradientBrush.RelativeTransform>
+                    <TransformGroup>
+                        <SkewTransform CenterX="0.00121408" CenterY="0.749408" AngleX="-25.5804" AngleY="0"/>
+                        <RotateTransform CenterX="0.00121408" CenterY="0.749408" Angle="-26.5664"/>
+                    </TransformGroup>
+                </LinearGradientBrush.RelativeTransform>
+                <LinearGradientBrush.GradientStops>
+                    <GradientStop Color="#FFEBFCFE" Offset="0"/>
+                    <GradientStop Color="#FFECFBFE" Offset="0.238281"/>
+                    <GradientStop Color="#FFEDFBFF" Offset="0.375"/>
+                    <GradientStop Color="#FFD6F0FF" Offset="0.597656"/>
+                    <GradientStop Color="#FFBFE6FF" Offset="1"/>
+                </LinearGradientBrush.GradientStops>
+            </LinearGradientBrush>
+        </ResourceDictionary>
+
+    </Application.Resources>
+</Application>
